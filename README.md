@@ -12,13 +12,15 @@ This repository packages `ingress-nginx` into a self-contained offline installer
 
 ## Build locally
 
-Requirements:
+Requirements for the build host or GitHub Actions runner:
 
 - Linux shell
 - Docker
 - Python 3
 - `tar`
 - `sha256sum`
+
+`jq` is not required. Python 3 is used only on the build side to parse `images/image.json`; it is not required on the offline target host.
 
 Build one architecture:
 
@@ -43,6 +45,16 @@ dist/ingress-nginx-1.15.1-arm64.run.sha256
 ```
 
 ## Install in an offline environment
+
+Target host requirements:
+
+- `bash`
+- common Linux base tools: `awk`, `head`, `wc`, `dd`, `od`, `tail`, `tar`, `sed`
+- `docker`, unless `--skip-image-prepare` is used
+- `kubectl`
+- optional `sha256sum`, only for checking the `.sha256` file before running the installer
+
+The target host does not need `jq` or `python3`.
 
 Copy the `.run` and `.sha256` file to the target host that can access the internal image registry and Kubernetes cluster.
 
